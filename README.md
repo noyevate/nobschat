@@ -2,15 +2,18 @@
 
 A new Flutter project.
 
-## Getting Started
+Nobschat is a real-time chat application built with Flutter, following Clean Architecture to ensure modularity, testability, and scalability. The app uses Bloc for reactive and predictable state management, promoting clear separation of concerns.
 
-This project is a starting point for a Flutter application.
+On the backend, a Node.js server handles core logic and messaging APIs, with MongoDB as the database to store user data and messages. Real-time communication is enabled using WebSockets, providing fast, seamless messaging between users.
 
-A few resources to get you started if this is your first Flutter project:
+#Key Technologies:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Bloc Pattern for state management
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Clean Architecture for organized, maintainable code
+
+Node.js backend with real-time WebSocket support
+
+MongoDB for message and user data storage
+
+Full-stack implementation demonstrating modern chat app development
