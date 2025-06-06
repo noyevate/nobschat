@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nobschat/core/theme.dart';
 import 'package:nobschat/login_page.dart';
+import 'package:nobschat/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:nobschat/features/auth/presentation/bloc/auth_event.dart';
+import 'package:nobschat/features/auth/presentation/bloc/auth_state.dart';
+import 'package:nobschat/features/auth/presentation/widgets/auth_button.dart';
+import 'package:nobschat/features/auth/presentation/widgets/auth_prompt.dart';
+import 'package:nobschat/features/auth/presentation/widgets/auth_textfield.dart';
 
 class ResgisterPage extends StatefulWidget {
   const ResgisterPage({super.key});
@@ -29,10 +36,14 @@ class _ResgisterPageState extends State<ResgisterPage> {
     _email.dispose();
     _pssword.dispose();
     _username.dispose();
-    _printInputValues();
+    // _printInputValues();
     super.dispose();
   }
 
+  void _onRegister() {
+    BlocProvider.of<AuthBloc>(context).add(RegisterEvent(
+        email: _email.text, username: _username.text, password: _pssword.text));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,89 +55,72 @@ class _ResgisterPageState extends State<ResgisterPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _buildTextInput("username", Icons.person, _username),
-              SizedBox(height: 10,),
-              _buildTextInput("email", Icons.mail, _email),
-              SizedBox(height: 10,),
-              _buildTextInput("password", Icons.person, _pssword, isPassword: true),
-              SizedBox(height: 20,),
-              _buildResgisterButton(),
-              SizedBox(height: 20,),
-              _buildLoginPrompt(),
+              AuthTextfield(
+                hintText: "username",
+                icon: Icons.person,
+                controller: _username,
+                isPassword: false,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              AuthTextfield(
+                hintText: "email",
+                icon: Icons.mail,
+                controller: _email,
+                isPassword: false,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              AuthTextfield(
+                hintText: "password",
+                icon: Icons.password,
+                controller: _pssword,
+                isPassword: true,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              BlocConsumer<AuthBloc, AuthState>(builder: (context, state) {
+                if (state is AuthLoading) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                return AuthButton(
+                  text: "Register",
+                  onPressed: () {
+                    _onRegister();
+                  },
+                );
+              }, listener: (context, state) {
+                if (state is AuthSuccess) {
+                  Navigator.pushNamed(context, '/login');
+                } else if (state is AuthFailure) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.error),
+                    ),
+                  );
+                }
+              }),
+              SizedBox(
+                height: 20,
+              ),
+              AuthPrompt(
+                  text1: "Already have an account? ",
+                  text2: "Click here to login",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => LoginPage(),
+                      ),
+                    );
+                  }),
             ],
           ),
         ),
       ),
     );
-  }
-
-  Widget _buildTextInput(String hintText, IconData icon, TextEditingController controller, {bool isPassword = false}) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      margin: EdgeInsets.all(5),
-      
-      decoration: BoxDecoration(
-        color: DefaultColors.sentMessageInput,
-        borderRadius: BorderRadius.circular(30)
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.grey,),
-          SizedBox(width: 10,),
-          Expanded(
-            child: TextField(
-              controller: controller,
-              obscureText: isPassword,
-              decoration: InputDecoration(
-                hintText: hintText,
-                hintStyle: TextStyle(color: Colors.grey),
-                border: InputBorder.none,
-              ),
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          
-        ],
-      ),
-    );
-  }
-
-  Widget _buildResgisterButton() {
-    return  ElevatedButton(
-      onPressed: () {
-        _printInputValues();
-      }, 
-      style: ElevatedButton.styleFrom(
-        backgroundColor: DefaultColors.buttonColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        padding: EdgeInsets.symmetric(vertical: 15),
-        
-      ),
-      child: Text("Register", style: TextStyle(color: Colors.white),),
-    );
-  }
-
-  Widget _buildLoginPrompt() {
-    return Center(
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => LoginPage(),),);
-        },
-        child: RichText(text: TextSpan(
-          text: "Already have an account? ", style: TextStyle(color: Colors.white, fontSize: 10),
-          children: [
-            TextSpan(
-              text: "Click here to login",
-              style: TextStyle(color: Colors.blue,fontSize: 10),
-            )
-          ]
-        )),
-      ),
-        );
   }
 }

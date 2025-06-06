@@ -38,6 +38,11 @@ dependencies:
   flutter_svg: ^2.1.0
   flutter_bloc: ^9.1.1
   dio: ^5.8.0+1
+  flutter_screenutil: ^5.9.3
+  heroicons_flutter: ^0.4.0
+  flutter_secure_storage: ^9.2.4
+  http: ^1.4.0
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:

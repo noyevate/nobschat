@@ -13,9 +13,25 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        }, 
+        icon: Container(
+          height: 30, 
+          width: 30,
+          decoration: BoxDecoration(
+
+            color: Colors.white.withOpacity(0.04), 
+            shape: BoxShape.circle
+
+          ),
+          child: Icon(Icons.arrow_back_ios_new, size: 15, color: Colors.white ),)
+      ),
         title: Row(
           
           children: [
+            
             CircleAvatar(
             radius: 15,
             backgroundImage: NetworkImage("https://lh3.googleusercontent.com/a/ACg8ocJvkUZGLhJG_So-PNNPRSWlqu0UjpUrujKPEf0VozkscOkOMw=s96-c"),
