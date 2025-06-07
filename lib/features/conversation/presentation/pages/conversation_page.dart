@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nobschat/core/format_date.dart';
 import 'package:nobschat/core/theme.dart';
 import 'package:nobschat/features/conversation/presentation/bloc/conversation_bloc.dart';
 import 'package:nobschat/features/conversation/presentation/bloc/conversation_event.dart';
@@ -88,10 +89,13 @@ class _ConversationPageState extends State<ConversationPage> {
                   padding: EdgeInsets.zero,
                   itemBuilder: (context, index) {
                     final conversations = state.conversation[index];
+                    DateTime createdAt = DateTime.parse(conversations.lastMessageTime.toString());
                     return _buildMessageTile(
                         conversations.participantName,
                         conversations.lastMessage.toString(),
-                        conversations.lastMessageTime.toString());
+                        
+                        formatDayAndDate(createdAt),
+                        );
                   },
                   
                 );

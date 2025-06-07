@@ -25,7 +25,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final user = await registerUsecase.call(
           event.email, event.username, event.password);
-          print("_onRegister: ${user.email}  ${user.username}  ${user.id}");
       emit(AuthSuccess(message: "Registration successful"));
     } on SocketException {
       emit(AuthFailure(error: "No internet connection"));
@@ -42,8 +41,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final user = await loginUsecase.call(event.email, event.password);
         await _storage.write(key: "token", value:  user.token);
         await _storage.write(key: "username", value:  user.username);
-        await _storage.write(key: "token", value:  user.email);
-        print("_onRegister: ${user.email}  ${user.username}  ${user.id} ${user.token}");
+        await _storage.write(key: "email", value:  user.email);
       emit(AuthSuccess(message: "login successful"));
       } on SocketException {
         emit(AuthFailure(error: "No internet connection"));

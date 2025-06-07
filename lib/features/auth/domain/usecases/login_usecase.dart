@@ -1,3 +1,4 @@
+import 'package:nobschat/features/auth/domain/entities/login_user_entity.dart';
 import 'package:nobschat/features/auth/domain/entities/user_entity.dart';
 import 'package:nobschat/features/auth/domain/repositories/auth_repository.dart';
 
@@ -6,7 +7,11 @@ class LoginUsecase {
 
   LoginUsecase({required this.repository});
 
-  Future<UserEntity> call(String email, String password) {
+  // Future<UserEntity> call(String email, String password) {
+  //   return repository.login(email, password);
+  // }
+
+  Future<LoginUserEntity> call(String email, String password) {
     return repository.login(email, password);
   }
 

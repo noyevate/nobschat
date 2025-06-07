@@ -55,12 +55,12 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'nobschat',
           theme: AppTheme.darkTheme,
-          home: ConversationPage(),
+          home: ResgisterPage(),
           routes: {
             '/login': (_) => LoginPage(),
             '/register': (_) => ResgisterPage(),
             '/chatpage': (_) => ChatPage(),
-            '/conversation_page': (_) => ConversationPage(),
+            '/home': (_) => ConversationPage(),
           },
         
           // home: TestLogin(),
